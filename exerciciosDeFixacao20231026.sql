@@ -25,3 +25,17 @@ BEGIN
 END;
 //
 DELIMITER ;
+
+
+--Após atualizar o nome de um cliente na tabela Clientes, insira uma mensagem na tabela Auditoria mostrando o nome antigo e o novo nome.
+
+DELIMITER //
+CREATE TRIGGER atualiza_nome_cliente
+AFTER UPDATE ON Clientes
+FOR EACH ROW
+BEGIN
+    INSERT INTO Auditoria (mensagem)
+    VALUES (CONCAT('Nome do cliente ID ', OLD.id, ' atualizado de "', OLD.nome, '" para "', NEW.nome, '" em ', NOW()));
+END;
+//
+DELIMITER ;
