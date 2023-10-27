@@ -11,3 +11,17 @@ BEGIN
 END;
 //
 DELIMITER ;
+
+
+--Antes de excluir um cliente da tabela Clientes, crie um trigger que insira uma mensagem na tabela Auditoria informando sobre a tentativa de exclusão.
+
+DELIMITER //
+CREATE TRIGGER tentativa_exclusao_cliente
+BEFORE DELETE ON Clientes
+FOR EACH ROW
+BEGIN
+    INSERT INTO Auditoria (mensagem)
+    VALUES (CONCAT('Tentativa de excluir cliente ID ', OLD.id, ' em ', NOW()));
+END;
+//
+DELIMITER ;
