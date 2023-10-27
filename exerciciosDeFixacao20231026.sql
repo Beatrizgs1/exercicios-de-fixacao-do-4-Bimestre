@@ -13,6 +13,8 @@ END;
 DELIMITER ;
 
 
+
+
 --2.Antes de excluir um cliente da tabela Clientes, crie um trigger que insira uma mensagem na tabela Auditoria informando sobre a tentativa de exclusão.
 
 DELIMITER //
@@ -25,6 +27,8 @@ BEGIN
 END;
 //
 DELIMITER ;
+
+
 
 
 --3.Após atualizar o nome de um cliente na tabela Clientes, insira uma mensagem na tabela Auditoria mostrando o nome antigo e o novo nome.
@@ -41,6 +45,8 @@ END;
 DELIMITER ;
 
 
+
+
 --4.Não permita que o nome do cliente seja atualizado para uma string vazia ou NULL. Se alguém tentar fazer isso, o trigger deve impedir a atualização e inserir uma mensagem na tabela Auditoria.
 
 DELIMITER //
@@ -52,10 +58,11 @@ BEGIN
         INSERT INTO Auditoria (mensagem)
         VALUES ('Tentativa de atualizar nome para vazio ou NULL impedida em ' NOW());
         SET NEW.nome = OLD.nome;
-    END IF;
+    END IF,
 END;
 //
 DELIMITER ;
+
 
 
 --5.Em uma loja, ao inserir um novo pedido na tabela Pedidos, o estoque do produto em questão, presente na tabela Produtos, deve ser decrementado. Se o estoque ficar abaixo de 5 unidades, uma mensagem deve ser inserida na tabela Auditoria.
@@ -72,7 +79,9 @@ BEGIN
     IF (SELECT estoque FROM Produtos WHERE id = NEW.produto_id) < 5 THEN
         INSERT INTO Auditoria (mensagem)
         VALUES (CONCAT('Baixo estoque para produto ID ', NEW.produto_id, ' em ', NOW()));
-    END IF;
+    END IF,
 END;
 //
 DELIMITER ;
+
+
